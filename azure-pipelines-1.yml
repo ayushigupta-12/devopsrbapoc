@@ -39,7 +39,7 @@ steps:
     command: build
     Dockerfile: 'dockerfile1'
     containerRegistry: jfrogrepo
-    repository: $(Build.Repository.Name)
+    repository: dockerimages/$(Build.Repository.Name)
     tags: |
       $(Build.BuildId)
     arguments: '--disable-content-trust=false'
