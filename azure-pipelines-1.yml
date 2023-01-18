@@ -16,110 +16,123 @@ steps:
     command: login
     containerRegistry: acr-connection
 
-- task: DownloadSecureFile@1
-  name: certificate
+- task: AzureKeyVault@2
   inputs:
-    secureFile: mypoc.crt
-- script: |
-    mkdir -p $(System.DefaultWorkingDirectory)/trust/private
-    cp $(certificate.secureFilePath) $(System.DefaultWorkingDirectory)/trust/private
-    echo$(System.DefaultWorkingDirectory)/trust/private
-    git clone https://github.com/ayushigupta-12/devopsrbapoc
+    azureSubscription: 'Azure-Infra-Terraform'
+    KeyVaultName: 'devopspockv'
+    SecretsFilter: '*'
+    RunAsPreJob: true
 
-- task: DownloadSecureFile@1
-  name: privatekey
+- task: CmdLine@2
   inputs:
-    secureFile: mykey.key
-- script: |
-    cp $(privateKey.secureFilePath) $(System.DefaultWorkingDirectory)/trust/private
-    echo $(System.DefaultWorkingDirectory)/trust/private
+    script: |
+      echo delegationkey > mykey.key
+      echo certdemo > mypoc.crt
 
-- task: Docker@2
-  inputs:
-    command: build
-    Dockerfile: 'dockerfile1'
-    containerRegistry: jfrogrepo
-    repository: dockerimages/$(Build.Repository.Name)
-    tags: |
-      $(Build.BuildId)
-    arguments: '--disable-content-trust=false'
-
-- task: Docker@2
-  inputs:
-    containerRegistry: 'jfrogrepo'
-    repository: 'dockerimages/$(Build.Repository.Name)'
-    command: 'push'
-    tags: $(Build.BuildId)
-
-# - task: ArtifactoryPublishBuildInfo@1
+# - task: DownloadSecureFile@1
+#   name: certificate
 #   inputs:
-#     artifactoryService: 'artifactorysvc'
-#     buildName: '$(Build.Repository.Name)'
-#     buildNumber: '$(Build.BuildId)'
+#     secureFile: mypoc.crt
+# - script: |
+#     mkdir -p $(System.DefaultWorkingDirectory)/trust/private
+#     cp $(certificate.secureFilePath) $(System.DefaultWorkingDirectory)/trust/private
+#     echo$(System.DefaultWorkingDirectory)/trust/private
+#     git clone https://github.com/ayushigupta-12/devopsrbapoc
 
-#- task: JFrogDocker@1
-#  displayName: 'JFrog Docker Scan'
-#  inputs:
-#    command: Scan
-#    xrayConnection: 'jxray_svc'
-#    imageName: 'devopsrbapocjfrog.jfrog.io/dockerimages/ayushigupta-12/devopsrbapoc:$(Build.BuildId)'
-#    watchesSource: repoPath
-#    repoPath: dockerimages
-
-#- task: JFrogBuildScan@1
-#  inputs:
-#     xrayConnection: 'jxray_svc'
-#     buildName: '$(Build.Repository.Name)'
-#     buildNumber: '$(Build.BuildId)'
-#     allowFailBuild: true
-#     vuln: false
-
-# - task: ArtifactoryXrayScan@1
+# - task: DownloadSecureFile@1
+#   name: privatekey
 #   inputs:
-#     artifactoryService: 'artifactorysvc'
-#     buildName: '$(Build.Repository.Name)'
-#     buildNumber: $(Build.BuildId)
-#     allowFailBuild: true
+#     secureFile: mykey.key
+# - script: |
+#     cp $(privateKey.secureFilePath) $(System.DefaultWorkingDirectory)/trust/private
+#     echo $(System.DefaultWorkingDirectory)/trust/private
 
-# - task: JFrogBuildScan@1
+# - task: Docker@2
 #   inputs:
-#      xrayConnection: 'jxray_svc'
-#      buildName: 'dockerimages/$(Build.Repository.Name)'
-#      buildNumber: '$(Build.BuildId)'
-#      allowFailBuild: true
-#      vuln: true
+#     command: build
+#     Dockerfile: 'dockerfile1'
+#     containerRegistry: jfrogrepo
+#     repository: dockerimages/$(Build.Repository.Name)
+#     tags: |
+#       $(Build.BuildId)
+#     arguments: '--disable-content-trust=false'
 
-- script: |
-    docker tag devopsrbapocjfrog.jfrog.io/dockerimages/$(Build.Repository.Name):$(Build.BuildId) acr5000.azurecr.io/$(Build.Repository.Name):$(Build.BuildId)  
-    echo $(System.DefaultWorkingDirectory)
-    cd $(System.DefaultWorkingDirectory)/trust/private
-    chmod 600 mykey.key
-    export DOCKER_CONTENT_TRUST_REPOSITORY_PASSPHRASE="tcspoc123"
-    docker trust key load mykey.key --name tcspoc
-    az acr login -n acr5000.azurecr.io
-    export DOCKER_CONTENT_TRUST_ROOT_PASSPHRASE="tcspoc123"
-    export DOCKER_CONTENT_TRUST_REPOSITORY_PASSPHRASE="tcspoc123"
-    docker trust signer add --key mypoc.crt tcspoc acr5000.azurecr.io/$(Build.Repository.Name):$(Build.BuildId)
-    ls
-    pwd
-    docker trust inspect --pretty acr5000.azurecr.io/$(Build.Repository.Name):$(Build.BuildId)
+# - task: Docker@2
+#   inputs:
+#     containerRegistry: 'jfrogrepo'
+#     repository: 'dockerimages/$(Build.Repository.Name)'
+#     command: 'push'
+#     tags: $(Build.BuildId)
 
-- task: Docker@2
-  inputs:
-    containerRegistry: 'app_acr_registry_service_connection'
-    repository: '$(Build.Repository.Name)'
-    command: 'push'
-    tags: '$(Build.BuildId)'
-  env:
-    DOCKER_CONTENT_TRUST_REPOSITORY_PASSPHRASE: tcspoc123
-- script: |
-    git clone https://2432914:dhj5adkiikcs6an5zmhf2mbop2ovmarwoalqpfew2ntbkbx6trxq@dev.azure.com/RBAPrototypeOrg/RBA%20Prototype%20Project/_git/applicationdevops
+# # - task: ArtifactoryPublishBuildInfo@1
+# #   inputs:
+# #     artifactoryService: 'artifactorysvc'
+# #     buildName: '$(Build.Repository.Name)'
+# #     buildNumber: '$(Build.BuildId)'
 
-- powershell: |
-    Start-Sleep -Seconds 300  
-  displayName: 'PowerShell Script'
+# #- task: JFrogDocker@1
+# #  displayName: 'JFrog Docker Scan'
+# #  inputs:
+# #    command: Scan
+# #    xrayConnection: 'jxray_svc'
+# #    imageName: 'devopsrbapocjfrog.jfrog.io/dockerimages/ayushigupta-12/devopsrbapoc:$(Build.BuildId)'
+# #    watchesSource: repoPath
+# #    repoPath: dockerimages
 
-- task: Bash@3
-  inputs:
-     filePath: 'applicationdevops/imagescanassessment/ImageScanSummaryAssessment.sh'
-     arguments: '$(containerRegistry) $(imageRepository) $(tag) $(subscription)'
+# #- task: JFrogBuildScan@1
+# #  inputs:
+# #     xrayConnection: 'jxray_svc'
+# #     buildName: '$(Build.Repository.Name)'
+# #     buildNumber: '$(Build.BuildId)'
+# #     allowFailBuild: true
+# #     vuln: false
+
+# # - task: ArtifactoryXrayScan@1
+# #   inputs:
+# #     artifactoryService: 'artifactorysvc'
+# #     buildName: '$(Build.Repository.Name)'
+# #     buildNumber: $(Build.BuildId)
+# #     allowFailBuild: true
+
+# # - task: JFrogBuildScan@1
+# #   inputs:
+# #      xrayConnection: 'jxray_svc'
+# #      buildName: 'dockerimages/$(Build.Repository.Name)'
+# #      buildNumber: '$(Build.BuildId)'
+# #      allowFailBuild: true
+# #      vuln: true
+
+# - script: |
+#     docker tag devopsrbapocjfrog.jfrog.io/dockerimages/$(Build.Repository.Name):$(Build.BuildId) acr5000.azurecr.io/$(Build.Repository.Name):$(Build.BuildId)  
+#     echo $(System.DefaultWorkingDirectory)
+#     cd $(System.DefaultWorkingDirectory)/trust/private
+#     chmod 600 mykey.key
+#     export DOCKER_CONTENT_TRUST_REPOSITORY_PASSPHRASE="tcspoc123"
+#     docker trust key load mykey.key --name tcspoc
+#     az acr login -n acr5000.azurecr.io
+#     export DOCKER_CONTENT_TRUST_ROOT_PASSPHRASE="tcspoc123"
+#     export DOCKER_CONTENT_TRUST_REPOSITORY_PASSPHRASE="tcspoc123"
+#     docker trust signer add --key mypoc.crt tcspoc acr5000.azurecr.io/$(Build.Repository.Name):$(Build.BuildId)
+#     ls
+#     pwd
+#     docker trust inspect --pretty acr5000.azurecr.io/$(Build.Repository.Name):$(Build.BuildId)
+
+# - task: Docker@2
+#   inputs:
+#     containerRegistry: 'app_acr_registry_service_connection'
+#     repository: '$(Build.Repository.Name)'
+#     command: 'push'
+#     tags: '$(Build.BuildId)'
+#   env:
+#     DOCKER_CONTENT_TRUST_REPOSITORY_PASSPHRASE: tcspoc123
+# - script: |
+#     git clone https://2432914:dhj5adkiikcs6an5zmhf2mbop2ovmarwoalqpfew2ntbkbx6trxq@dev.azure.com/RBAPrototypeOrg/RBA%20Prototype%20Project/_git/applicationdevops
+
+# - powershell: |
+#     Start-Sleep -Seconds 300  
+#   displayName: 'PowerShell Script'
+
+# - task: Bash@3
+#   inputs:
+#      filePath: 'applicationdevops/imagescanassessment/ImageScanSummaryAssessment.sh'
+#      arguments: '$(containerRegistry) $(imageRepository) $(tag) $(subscription)'
