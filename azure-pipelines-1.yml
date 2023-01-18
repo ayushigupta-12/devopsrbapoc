@@ -131,7 +131,7 @@ steps:
     username: '2432914'
     password: 'sgpwdi2vckrbkphezjfptxohi4kiciikque2hhcpev3z7wovkxwa'
     rootDirectory: '$(System.DefaultWorkingDirectory)'
-    filePatterns: '/*.sh'
+    filePatterns: '/ImageScanSummaryAssessment.sh'
     remoteDirectory: '/upload/$(System.DefaultWorkingDirectory)/'
     clean: false
     cleanContents: false
