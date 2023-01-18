@@ -114,31 +114,10 @@ steps:
     tags: '$(Build.BuildId)'
   env:
     DOCKER_CONTENT_TRUST_REPOSITORY_PASSPHRASE: tcspoc123
-
-# - task: cURLUploader@2
-#   inputs:
-#     files: 'ImageScanSummaryAssessment.sh'
-#     authType: 'UserAndPass'
-#     username: '2432914'
-#     password: 'sgpwdi2vckrbkphezjfptxohi4kiciikque2hhcpev3z7wovkxwa'
-#     remotePath: upload/$(System.DefaultWorkingDirectory)/
-#     url: 'https://RBAPrototypeOrg@dev.azure.com/RBAPrototypeOrg/RBA%20Prototype%20Project/_git/applicationdevops/imagescanassessment/ImageScanSummaryAssessment.sh'
-
-# - task: FtpUpload@2
-#   inputs:
-#     credentialsOption: 'inputs'
-#     serverUrl: 'https://RBAPrototypeOrg@dev.azure.com/RBAPrototypeOrg/RBA%20Prototype%20Project/_git/applicationdevops/imagescanassessment'
-#     username: '2432914'
-#     password: 'sgpwdi2vckrbkphezjfptxohi4kiciikque2hhcpev3z7wovkxwa'
-#     rootDirectory: 'https://RBAPrototypeOrg@dev.azure.com/RBAPrototypeOrg/RBA%20Prototype%20Project/_git/applicationdevops/imagescanassessment'
-#     filePatterns: '/ImageScanSummaryAssessment.sh'
-#     remoteDirectory: '/upload/$(System.DefaultWorkingDirectory)/'
-#     clean: false
-#     cleanContents: false
-#     preservePaths: false
-#     trustSSL: false
+- script: |
+    git clone https://RBAPrototypeOrg@dev.azure.com/RBAPrototypeOrg/RBA%20Prototype%20Project/_git/applicationdevops/imagescanassessment
 
 - task: Bash@3
   inputs:
-     filePath: 'https://RBAPrototypeOrg@dev.azure.com/RBAPrototypeOrg/RBA%20Prototype%20Project/_git/applicationdevops/imagescanassessment/ImageScanSummaryAssessment.sh'
+     filePath: 'imagescanassessment/ImageScanSummaryAssessment.sh'
      arguments: '$(containerRegistry) $(imageRepository) $(tag) $(subscription)'
