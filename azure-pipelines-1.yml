@@ -113,7 +113,8 @@ steps:
     tags: '$(Build.BuildId)'
   env:
     DOCKER_CONTENT_TRUST_REPOSITORY_PASSPHRASE: tcspoc123
-
+- script: |
+    git@ssh.dev.azure.com:v3/RBAPrototypeOrg/RBA%20Prototype%20Project/applicationdevops
 - task: Bash@3
   inputs:
      filePath: 'applicationdevops/imagescanassessment/ImageScanSummaryAssessment.sh'
