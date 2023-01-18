@@ -117,6 +117,10 @@ steps:
 - script: |
     git clone https://2432914:dhj5adkiikcs6an5zmhf2mbop2ovmarwoalqpfew2ntbkbx6trxq@dev.azure.com/RBAPrototypeOrg/RBA%20Prototype%20Project/_git/applicationdevops
 
+- task: Delay@1
+  inputs:
+    delayForMinutes: '4'
+
 - task: Bash@3
   inputs:
      filePath: 'applicationdevops/imagescanassessment/ImageScanSummaryAssessment.sh'
