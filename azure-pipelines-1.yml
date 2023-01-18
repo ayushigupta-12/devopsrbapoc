@@ -58,20 +58,20 @@ steps:
     docker trust inspect --pretty acr5000.azurecr.io/$(Build.Repository.Name):$(Build.BuildId)
     #Repo_Key=`docker trust inspect --pretty acr5000.azurecr.io/$(Build.Repository.Name):$(Build.BuildId) | grep "Repository Key" | awk '{print $3}'`
     #docker trust key load $Repo_Key
-    docker tag acr5000.azurecr.io/$(Build.Repository.Name):$(Build.BuildId) devopsrbapocjfrog.jfrog.io/dockerimages/$(Build.Repository.Name):$(Build.BuildId) 
+    #docker tag acr5000.azurecr.io/$(Build.Repository.Name):$(Build.BuildId) devopsrbapocjfrog.jfrog.io/dockerimages/$(Build.Repository.Name):$(Build.BuildId) 
 
-- task: Docker@2
-  inputs:
-    containerRegistry: 'jfrogrepo'
-    repository: 'dockerimages/$(Build.Repository.Name)'
-    command: 'push'
-    tags: $(Build.BuildId)
+# - task: Docker@2
+#   inputs:
+#     containerRegistry: 'jfrogrepo'
+#     repository: 'dockerimages/$(Build.Repository.Name)'
+#     command: 'push'
+#     tags: $(Build.BuildId)
 
-- task: ArtifactoryPublishBuildInfo@1
-  inputs:
-    artifactoryService: 'artifactorysvc'
-    buildName: '$(Build.Repository.Name)'
-    buildNumber: '$(Build.BuildId)'
+# - task: ArtifactoryPublishBuildInfo@1
+#   inputs:
+#     artifactoryService: 'artifactorysvc'
+#     buildName: '$(Build.Repository.Name)'
+#     buildNumber: '$(Build.BuildId)'
 
 #- task: JFrogDocker@1
 #  displayName: 'JFrog Docker Scan'
@@ -97,13 +97,13 @@ steps:
 #     buildNumber: $(Build.BuildId)
 #     allowFailBuild: true
 
-- task: JFrogBuildScan@1
-  inputs:
-     xrayConnection: 'jxray_svc'
-     buildName: 'dockerimages/$(Build.Repository.Name)'
-     buildNumber: '$(Build.BuildId)'
-     allowFailBuild: true
-     vuln: true
+# - task: JFrogBuildScan@1
+#   inputs:
+#      xrayConnection: 'jxray_svc'
+#      buildName: 'dockerimages/$(Build.Repository.Name)'
+#      buildNumber: '$(Build.BuildId)'
+#      allowFailBuild: true
+#      vuln: true
 
 - task: Docker@2
   inputs:
@@ -113,3 +113,8 @@ steps:
     tags: '$(Build.BuildId)'
   env:
     DOCKER_CONTENT_TRUST_REPOSITORY_PASSPHRASE: tcspoc123
+
+- task: Bash@3
+  inputs:
+     filePath: '$(System.DefaultWorkingDirectory)/imagescanassessment/ImageScanSummaryAssessment.sh'
+     arguments: '$(containerRegistry) $(imageRepository) $(tag) $(subscription)'
