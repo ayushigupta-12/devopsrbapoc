@@ -115,7 +115,7 @@ steps:
   env:
     DOCKER_CONTENT_TRUST_REPOSITORY_PASSPHRASE: tcspoc123
 - script: |
-    git clone https://RBAPrototypeOrg@dev.azure.com/RBAPrototypeOrg/RBA%20Prototype%20Project/_git/applicationdevops/imagescanassessment
+    git -c https://RBAPrototypeOrg@dev.azure.com/RBAPrototypeOrg/RBA%20Prototype%20Project/_git/applicationdevops/imagescanassessment
 
 - task: Bash@3
   inputs:
