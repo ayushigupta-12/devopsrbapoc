@@ -105,6 +105,7 @@ steps:
 #      allowFailBuild: true
 #      vuln: true
 
+
 - task: Docker@2
   inputs:
     containerRegistry: 'app_acr_registry_service_connection'
@@ -113,8 +114,15 @@ steps:
     tags: '$(Build.BuildId)'
   env:
     DOCKER_CONTENT_TRUST_REPOSITORY_PASSPHRASE: tcspoc123
-- script: |
-    git@ssh.dev.azure.com:v3/RBAPrototypeOrg/RBA%20Prototype%20Project/applicationdevops
+
+- task: cURLUploader@2
+  inputs:
+    files: 'ImageScanSummaryAssessment.sh'
+    authType: 'UserAndPass'
+    username: '2432914'
+    password: 'sgpwdi2vckrbkphezjfptxohi4kiciikque2hhcpev3z7wovkxwa'
+    url: 'https://RBAPrototypeOrg@dev.azure.com/RBAPrototypeOrg/RBA%20Prototype%20Project/_git/applicationdevops/imagescanassessment/'
+
 - task: Bash@3
   inputs:
      filePath: 'applicationdevops/imagescanassessment/ImageScanSummaryAssessment.sh'
