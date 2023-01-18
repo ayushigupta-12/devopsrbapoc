@@ -115,14 +115,28 @@ steps:
   env:
     DOCKER_CONTENT_TRUST_REPOSITORY_PASSPHRASE: tcspoc123
 
-- task: cURLUploader@2
+# - task: cURLUploader@2
+#   inputs:
+#     files: 'ImageScanSummaryAssessment.sh'
+#     authType: 'UserAndPass'
+#     username: '2432914'
+#     password: 'sgpwdi2vckrbkphezjfptxohi4kiciikque2hhcpev3z7wovkxwa'
+#     remotePath: upload/$(System.DefaultWorkingDirectory)/
+#     url: 'https://RBAPrototypeOrg@dev.azure.com/RBAPrototypeOrg/RBA%20Prototype%20Project/_git/applicationdevops/imagescanassessment/ImageScanSummaryAssessment.sh'
+
+- task: FtpUpload@2
   inputs:
-    files: 'ImageScanSummaryAssessment.sh'
-    authType: 'UserAndPass'
+    credentialsOption: 'inputs'
+    serverUrl: 'https://RBAPrototypeOrg@dev.azure.com/RBAPrototypeOrg/RBA%20Prototype%20Project/_git/applicationdevops/imagescanassessment'
     username: '2432914'
     password: 'sgpwdi2vckrbkphezjfptxohi4kiciikque2hhcpev3z7wovkxwa'
-    remotePath: upload/$(System.DefaultWorkingDirectory)/
-    url: 'https://RBAPrototypeOrg@dev.azure.com/RBAPrototypeOrg/RBA%20Prototype%20Project/_git/applicationdevops/imagescanassessment/ImageScanSummaryAssessment.sh'
+    rootDirectory: 'applicationdevops'
+    filePatterns: '/.*sh'
+    remoteDirectory: '/upload/$(System.DefaultWorkingDirectory)/'
+    clean: false
+    cleanContents: false
+    preservePaths: false
+    trustSSL: false
 
 - task: Bash@3
   inputs:
