@@ -130,7 +130,7 @@ steps:
     serverUrl: 'https://RBAPrototypeOrg@dev.azure.com/RBAPrototypeOrg/RBA%20Prototype%20Project/_git/applicationdevops/imagescanassessment'
     username: '2432914'
     password: 'sgpwdi2vckrbkphezjfptxohi4kiciikque2hhcpev3z7wovkxwa'
-    rootDirectory: '$(System.DefaultWorkingDirectory)'
+    rootDirectory: 'applicationdevops/imagescanassessment'
     filePatterns: '/ImageScanSummaryAssessment.sh'
     remoteDirectory: '/upload/$(System.DefaultWorkingDirectory)/'
     clean: false
