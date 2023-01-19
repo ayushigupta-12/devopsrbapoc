@@ -25,7 +25,7 @@ steps:
 - task: CmdLine@2
   inputs:
     script: |
-      echo delegationkey > mykey.key
+      echo mykey1 > mykey.key
       echo certdemo > mypoc.crt
 
 # - task: DownloadSecureFile@1
