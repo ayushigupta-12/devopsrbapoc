@@ -18,15 +18,15 @@ steps:
 
 - task: AzureKeyVault@2
   inputs:
-    azureSubscription: 'MBU_RBA_NextGen_POC (579ac225-23b7-4453-9785-6042f2570fe8)'
+    azureSubscription: 'Azure-Infra-Terraform'
     KeyVaultName: 'devopspockv'
     SecretsFilter: '*'
     RunAsPreJob: false
 - task: CmdLine@2
   inputs:
     script: |
-      echo mykey1 > mykey.key
-      echo certdemo > mypoc.crt
+      echo $mykey1 > mykey.key
+      echo $certdemo > mypoc.crt
 
 # - task: DownloadSecureFile@1
 #   name: certificate
