@@ -25,7 +25,8 @@ steps:
 - task: CmdLine@2
   inputs:
     script:  
-     echo $(domain) > domain.crt
+     echo $(domain) > domain.cert
+     echo $(domain) > domain.pfx
 
 - task: CopyFiles@2
   inputs:
