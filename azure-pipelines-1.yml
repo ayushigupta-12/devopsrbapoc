@@ -51,7 +51,7 @@ steps:
     command: build
     Dockerfile: 'dockerfile1'
     containerRegistry: jfrogrepo
-    repository: dockerimages/$(Build.Repository.Name)
+    repository: dockerimages/ayushigupta-12/devopsrbapoc
     tags: |
       $(Build.BuildId)
     arguments: '--disable-content-trust=false'
@@ -59,23 +59,23 @@ steps:
 - task: Docker@2
   inputs:
     containerRegistry: 'jfrogrepo'
-    repository: 'dockerimages/$(Build.Repository.Name)'
+    repository: 'dockerimages/ayushigupta-12/devopsrbapoc'
     command: 'push'
     tags: $(Build.BuildId)
 
-# - task: JFrogPublishBuildInfo@1
-#   inputs:
-#     artifactoryConnection: 'jfrogconnect'
-#     buildName: $(Build.Repository.Name)
-#     buildNumber: '$(Build.BuildId)'
+- task: JFrogPublishBuildInfo@1
+  inputs:
+    artifactoryConnection: 'jfrogconnect'
+    buildName: ayushigupta-12/devopsrbapoc
+    buildNumber: '$(Build.BuildId)'
 
-# - task: JFrogBuildScan@1
-#   inputs:
-#     xrayConnection: 'jxray_svc'
-#     buildName: $(Build.Repository.Name)
-#     buildNumber: $(Build.BuildId)
-#     allowFailBuild: true
-#     vuln: false
+- task: JFrogBuildScan@1
+  inputs:
+    xrayConnection: 'jxray_svc'
+    buildName: ayushigupta-12/devopsrbapoc
+    buildNumber: $(Build.BuildId)
+    allowFailBuild: true
+    vuln: false
 
 - script: |
     docker tag devopsrbapocjfrog.jfrog.io/dockerimages/$(Build.Repository.Name):$(Build.BuildId) acr5000.azurecr.io/$(Build.Repository.Name):$(Build.BuildId)  
