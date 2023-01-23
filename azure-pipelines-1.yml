@@ -15,29 +15,16 @@ steps:
   inputs:
     command: login
     containerRegistry: acr-connection
-- task: AzureKeyVault@2
-  inputs:
-    azureSubscription: 'Azure-Infra-Terraform'
-    KeyVaultName: 'devopspockv'
-    SecretsFilter: '*'
-    RunAsPreJob: true
 
-- task: CmdLine@2
+- task: Bash@3
   inputs:
-    script:  
-     echo $(domain) > cert
-
-- task: CopyFiles@2
-  inputs:
-    Contents: 'cert'
-    TargetFolder: '$(build.artifactstagingdirectory)'
-
-- task: PublishBuildArtifacts@1
-  inputs:
-    PathtoPublish: '$(Build.ArtifactStagingDirectory)'
-    ArtifactName: 'drop'
-    publishLocation: 'Container'
-
+    targetType: 'inline'
+    script: |
+      az account set --subscription $subscription
+      az keyvault secret download --file domain.pfx --encoding base64 --name domain --vault-name devopspockv
+      openssl pkcs12 -in domain.pfx -nocerts -out mykey.key -nodes -password pass:
+      openssl pkcs12 -in domain.pfx -clcerts -nokeys -out mypoc.crt -nodes -password pass:
+      ls
 # - task: DownloadSecureFile@1
 #   name: certificate
 #   inputs:
