@@ -69,6 +69,10 @@ steps:
     buildName: myimage
     buildNumber: '$(Build.BuildId)'
 
+- powershell: |
+    Start-Sleep -Seconds 200  
+  displayName: 'PowerShell Script'
+
 - task: ArtifactoryXrayScan@1
   inputs:
     artifactoryService: 'artifactorysvc'
