@@ -25,11 +25,11 @@ steps:
 - task: CmdLine@2
   inputs:
     script:  
-     echo $(domain) > domain.pem
+     echo $(domain) > cert
 
 - task: CopyFiles@2
   inputs:
-    Contents: 'domain.*'
+    Contents: 'cert'
     TargetFolder: '$(build.artifactstagingdirectory)'
 
 - task: PublishBuildArtifacts@1
