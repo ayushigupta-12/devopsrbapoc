@@ -65,7 +65,7 @@ steps:
 
 - task: JFrogPublishBuildInfo@1
   inputs:
-    artifactoryConnection: 'Jfrog-CE'
+    artifactoryConnection: 'jfrogconnect'
     buildName: $(Build.Repository.Name)
     buildNumber: '$(Build.BuildId)'
 
