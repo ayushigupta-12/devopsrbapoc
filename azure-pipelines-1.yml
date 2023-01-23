@@ -78,22 +78,22 @@ steps:
     vuln: false
 
 - script: |
-    docker tag devopsrbapocjfrog.jfrog.io/dockerimages/$(Build.Repository.Name):$(Build.BuildId) acr5000.azurecr.io/$(Build.Repository.Name):$(Build.BuildId)  
+    docker tag devopsrbapocjfrog.jfrog.io/dockerimages/myimage:$(Build.BuildId) acr5000.azurecr.io/myimage:$(Build.BuildId)  
     echo $(System.DefaultWorkingDirectory)
     chmod 600 mykey.key
     export DOCKER_CONTENT_TRUST_REPOSITORY_PASSPHRASE="tcspoc123"
     docker trust key load mykey.key --name tcspoc
     export DOCKER_CONTENT_TRUST_ROOT_PASSPHRASE="tcspoc123"
     export DOCKER_CONTENT_TRUST_REPOSITORY_PASSPHRASE="tcspoc123"
-    docker trust signer add --key mypoc.crt tcspoc acr5000.azurecr.io/$(Build.Repository.Name):$(Build.BuildId)
+    docker trust signer add --key mypoc.crt tcspoc acr5000.azurecr.io/myimage:$(Build.BuildId)
     ls
     pwd
-    docker trust inspect --pretty acr5000.azurecr.io/$(Build.Repository.Name):$(Build.BuildId)
+    docker trust inspect --pretty acr5000.azurecr.io/myimage:$(Build.BuildId)
 
 - task: Docker@2
   inputs:
     containerRegistry: 'app_acr_registry_service_connection'
-    repository: '$(Build.Repository.Name)'
+    repository: 'myimage'
     command: 'push'
     tags: '$(Build.BuildId)'
   env:
