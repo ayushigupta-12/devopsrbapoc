@@ -51,7 +51,7 @@ steps:
     command: build
     Dockerfile: 'dockerfile1'
     containerRegistry: jfrogrepo
-    repository: dockerimages/ayushigupta-12/devopsrbapoc
+    repository: dockerimages/myimage
     tags: |
       $(Build.BuildId)
     arguments: '--disable-content-trust=false'
@@ -59,20 +59,20 @@ steps:
 - task: Docker@2
   inputs:
     containerRegistry: 'jfrogrepo'
-    repository: 'dockerimages/ayushigupta-12/devopsrbapoc'
+    repository: 'dockerimages/myimage'
     command: 'push'
     tags: $(Build.BuildId)
 
 - task: JFrogPublishBuildInfo@1
   inputs:
     artifactoryConnection: 'jfrogconnect'
-    buildName: ayushigupta-12/devopsrbapoc
+    buildName: myimage
     buildNumber: '$(Build.BuildId)'
 
 - task: JFrogBuildScan@1
   inputs:
     xrayConnection: 'jxray_svc'
-    buildName: ayushigupta-12/devopsrbapoc
+    buildName: myimage
     buildNumber: $(Build.BuildId)
     allowFailBuild: true
     vuln: false
