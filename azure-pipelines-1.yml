@@ -63,19 +63,19 @@ steps:
     command: 'push'
     tags: $(Build.BuildId)
 
-- task: JFrogPublishBuildInfo@1
-  inputs:
-    artifactoryConnection: 'jfrogconnect'
-    buildName: $(Build.Repository.Name)
-    buildNumber: '$(Build.BuildId)'
+# - task: JFrogPublishBuildInfo@1
+#   inputs:
+#     artifactoryConnection: 'jfrogconnect'
+#     buildName: $(Build.Repository.Name)
+#     buildNumber: '$(Build.BuildId)'
 
-- task: JFrogBuildScan@1
-  inputs:
-    xrayConnection: 'jxray_svc'
-    buildName: $(Build.Repository.Name)
-    buildNumber: $(Build.BuildId)
-    allowFailBuild: true
-    vuln: false
+# - task: JFrogBuildScan@1
+#   inputs:
+#     xrayConnection: 'jxray_svc'
+#     buildName: $(Build.Repository.Name)
+#     buildNumber: $(Build.BuildId)
+#     allowFailBuild: true
+#     vuln: false
 
 - script: |
     docker tag devopsrbapocjfrog.jfrog.io/dockerimages/$(Build.Repository.Name):$(Build.BuildId) acr5000.azurecr.io/$(Build.Repository.Name):$(Build.BuildId)  
