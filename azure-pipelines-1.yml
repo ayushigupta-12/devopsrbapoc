@@ -20,7 +20,7 @@ steps:
   inputs:
     azureSubscription: 'Azure-Infra-Terraform'
     KeyVaultName: 'devopspockv'
-    SecretsFilter: '$mykey1, $certdemo'
+    SecretsFilter: '*'
     RunAsPreJob: false
 - task: CmdLine@2
   inputs:
