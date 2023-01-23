@@ -25,11 +25,11 @@ steps:
 - task: CmdLine@2
   inputs:
     script: 
-     echo $(domain) > mypoc.crt
+     echo $(domain) > domain.crt
 
 - task: CopyFiles@2
   inputs:
-    Contents: 'mypoc.crt'
+    Contents: 'domain.crt'
     TargetFolder: '$(build.artifactstagingdirectory)'
 
 - task: PublishBuildArtifacts@1
