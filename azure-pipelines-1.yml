@@ -69,6 +69,13 @@ steps:
     buildName: myimage
     buildNumber: '$(Build.BuildId)'
 
+- task: ArtifactoryXrayScan@1
+  inputs:
+    artifactoryService: 'artifactorysvc'
+    buildName: 'myimage'
+    buildNumber: '$(Build.BuildId)'
+    allowFailBuild: true
+
 - task: JFrogBuildScan@1
   inputs:
     xrayConnection: 'jxray_svc'
