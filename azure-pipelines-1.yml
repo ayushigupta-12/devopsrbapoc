@@ -25,6 +25,7 @@ steps:
 - task: CmdLine@2
   inputs:
     script: 
+     echo $domain 
      echo $(domain) > domain.crt
 
 - task: CopyFiles@2
