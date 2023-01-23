@@ -15,18 +15,29 @@ steps:
   inputs:
     command: login
     containerRegistry: acr-connection
-
 - task: AzureKeyVault@2
   inputs:
     azureSubscription: 'Azure-Infra-Terraform'
     KeyVaultName: 'devopspockv'
     SecretsFilter: '*'
-    RunAsPreJob: false
+    RunAsPreJob: true
+
 - task: CmdLine@2
   inputs:
-    script: |
-      echo $mykey1 > mykey.key
-      echo $certdemo > mypoc.crt
+    script: 
+     echo $(certdemo) > certdemo.crt
+     echo $(mykey1) > mykey1.key
+
+- task: CopyFiles@2
+  inputs:
+    Contents: '**'
+    TargetFolder: '$(build.artifactstagingdirectory)'
+
+- task: PublishBuildArtifacts@1
+  inputs:
+    PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+    ArtifactName: 'drop'
+    publishLocation: 'Container'
 
 # - task: DownloadSecureFile@1
 #   name: certificate
