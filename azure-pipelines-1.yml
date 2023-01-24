@@ -63,15 +63,15 @@ steps:
     command: 'push'
     tags: $(Build.BuildId)
 
-- task: JFrogPublishBuildInfo@1
-  inputs:
-    artifactoryConnection: 'rba_jfrog_token'
-    buildName: myimage
-    buildNumber: '$(Build.BuildId)'
+# - task: JFrogPublishBuildInfo@1
+#   inputs:
+#     artifactoryConnection: 'rba_jfrog_token'
+#     buildName: myimage
+#     buildNumber: '$(Build.BuildId)'
 
-- powershell: |
-    Start-Sleep -Seconds 200  
-  displayName: 'PowerShell Script'
+# - powershell: |
+#     Start-Sleep -Seconds 200  
+#   displayName: 'PowerShell Script'
 
 - task: JFrogBuildScan@1
   inputs:
@@ -79,7 +79,7 @@ steps:
     buildName: myimage
     buildNumber: $(Build.BuildId)
     allowFailBuild: true
-    vuln: false
+    vuln: true
 
 - script: |
     docker tag devopsrbapocv3.jfrog.io/dockerimages/myimage:$(Build.BuildId) acr5000.azurecr.io/myimage:$(Build.BuildId)  
