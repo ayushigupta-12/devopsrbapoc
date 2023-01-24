@@ -58,7 +58,7 @@ steps:
 
 - task: Docker@2
   inputs:
-    containerRegistry: 'rba_jfrog_repo'
+    containerRegistry: rba_jfrog_repo
     repository: 'dockerimages/myimage'
     command: 'push'
     tags: $(Build.BuildId)
