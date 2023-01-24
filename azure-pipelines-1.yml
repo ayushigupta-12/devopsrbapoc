@@ -50,7 +50,7 @@ steps:
   inputs:
     command: build
     Dockerfile: 'dockerfile1'
-    containerRegistry: jfrogrepo
+    containerRegistry: rba_jfrog_docker
     repository: dockerimages/myimage
     tags: |
       $(Build.BuildId)
@@ -58,14 +58,14 @@ steps:
 
 - task: Docker@2
   inputs:
-    containerRegistry: 'jfrogrepo'
+    containerRegistry: 'rba_jfrog_docker'
     repository: 'dockerimages/myimage'
     command: 'push'
     tags: $(Build.BuildId)
 
 - task: JFrogPublishBuildInfo@1
   inputs:
-    artifactoryConnection: 'jfrogconnect'
+    artifactoryConnection: 'rba_jfrog_token'
     buildName: myimage
     buildNumber: '$(Build.BuildId)'
 
@@ -73,16 +73,9 @@ steps:
     Start-Sleep -Seconds 200  
   displayName: 'PowerShell Script'
 
-- task: ArtifactoryXrayScan@1
-  inputs:
-    artifactoryService: 'artifactorysvc'
-    buildName: 'myimage'
-    buildNumber: '$(Build.BuildId)'
-    allowFailBuild: true
-
 - task: JFrogBuildScan@1
   inputs:
-    xrayConnection: 'jxray_svc'
+    xrayConnection: 'rba_jfrog_xray'
     buildName: myimage
     buildNumber: $(Build.BuildId)
     allowFailBuild: true
