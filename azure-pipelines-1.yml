@@ -50,7 +50,7 @@ steps:
   inputs:
     command: build
     Dockerfile: 'dockerfile1'
-    containerRegistry: rba_jfrog_docker
+    containerRegistry: rba_jfrog_repo
     repository: dockerimages/myimage
     tags: |
       $(Build.BuildId)
@@ -58,7 +58,7 @@ steps:
 
 - task: Docker@2
   inputs:
-    containerRegistry: 'rba_jfrog_docker'
+    containerRegistry: 'rba_jfrog_repo'
     repository: 'dockerimages/myimage'
     command: 'push'
     tags: $(Build.BuildId)
