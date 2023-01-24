@@ -82,7 +82,7 @@ steps:
     vuln: false
 
 - script: |
-    docker tag devopsrbapocjfrog.jfrog.io/dockerimages/myimage:$(Build.BuildId) acr5000.azurecr.io/myimage:$(Build.BuildId)  
+    docker tag devopsrbapocv3.jfrog.io/dockerimages/myimage:$(Build.BuildId) acr5000.azurecr.io/myimage:$(Build.BuildId)  
     echo $(System.DefaultWorkingDirectory)
     chmod 600 mykey.key
     export DOCKER_CONTENT_TRUST_REPOSITORY_PASSPHRASE="tcspoc123"
