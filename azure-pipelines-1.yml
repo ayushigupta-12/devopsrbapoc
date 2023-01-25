@@ -63,11 +63,11 @@ steps:
     command: 'push'
     tags: $(Build.BuildId)
 
-# - task: JFrogPublishBuildInfo@1
-#   inputs:
-#     artifactoryConnection: 'rba_jfrog_token'
-#     buildName: myimage
-#     buildNumber: '$(Build.BuildId)'
+- task: JFrogPublishBuildInfo@1
+  inputs:
+    artifactoryConnection: 'rba_jfrog_token'
+    buildName: myimage
+    buildNumber: '$(Build.BuildId)'
 
 # - powershell: |
 #     Start-Sleep -Seconds 200  
