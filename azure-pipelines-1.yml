@@ -89,6 +89,7 @@ steps:
     docker trust key load mykey.key --name tcspoc
     export DOCKER_CONTENT_TRUST_ROOT_PASSPHRASE=$(rootkey)
     export DOCKER_CONTENT_TRUST_REPOSITORY_PASSPHRASE=$(repokey)
+    export -p | grep DOCKER
     docker trust signer add --key mypoc.crt tcspoc acr5000.azurecr.io/myimage:$(Build.BuildId)
     ls
     pwd
